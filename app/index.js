@@ -1,11 +1,46 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native'
 import { useRouter } from 'expo-router'
-import React from 'react'
-import { Button } from './components/ButtonComponent'
-import { Input } from './components/InputComponent'
+import React, {useState, useEffect} from 'react'
+import  Button  from './components/ButtonComponent'
+import  InputForm  from './components/InputComponent'
+import { useSelector } from 'react-redux'
+
 
 const index = () => {
+  // group of variables
   const router = useRouter()
+  const [ username, setUsername ] = useState('');
+  const [ password, setPassword ] = useState('');
+  const [ isPassVisible, setIsPassVisible ] = useState(false)
+
+  const globalProfileData = useSelector(store => store.profileReducer);
+  
+  // group of functions
+  const checkData = () => {
+    if (username === '' || password === '') {
+      alert('Please input your username and password!');
+    }
+    else if ((username.toLowerCase() ===
+              globalProfileData.username.toLowerCase())
+            && (password.toLowerCase() === 
+          globalProfileData.password.toLowerCase()))
+    {
+      alert('Login Successful');
+    }
+    else {
+      alert(`Your username and password didn't match!`);
+    };
+
+    setUsername('');
+    setPassword('');
+  };
+
+  // group of useEffect
+  useEffect(() => {
+    console.log('GLOBAL STATE ON LOGIN PAGE');
+    console.log(globalProfileData);
+  }, [globalProfileData]);
+  
   return (
     <ScrollView contentContainerStyle={styles.scroll}>
       <View style={styles.mainContainer}>
@@ -16,17 +51,31 @@ const index = () => {
           />
         </View>
         <View style={styles.inputContainer}>
-          <Input 
+          <InputForm
             title="Username"
             placeholder="Username"
+            onChangeText={(text) => setUsername(text)}
+            value={username}
           />
-          <Input 
+          {/* <Input 
             title="Password"
             placeholder="Password"
+            isPassword={true}
+          /> */}
+          <InputForm
+            title="Password"
+            placeholder="Password"
+            isPassword={true}
+            secureTextEntry={isPassVisible ? false : true }
+            iconName={isPassVisible ? 'eye-off' : 'eye'}
+            onPress={() => setIsPassVisible(!isPassVisible)}
+            onChangeText={(text) => setPassword(text)}
+            value={password}
           />
         </View>
         <Button 
           text="Login"
+          onPress={() => checkData()}
         />
         <View style={styles.textContainer}>
           <Text style={styles.text}>
