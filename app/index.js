@@ -25,7 +25,7 @@ const index = () => {
             && (password.toLowerCase() === 
           globalProfileData.password.toLowerCase()))
     {
-      alert('Login Successful');
+      router.push('HomeScreen');
     }
     else {
       alert(`Your username and password didn't match!`);
