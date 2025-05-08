@@ -1,5 +1,5 @@
 import { Stack } from "expo-router";
-import {Provider} from 'react-redux';
+import {Provider, useSelector} from 'react-redux';
 import { profileReducer } from "./store/reducers/profileReducer";
 import {createStore, combineReducers} from 'redux';
 
@@ -12,10 +12,26 @@ const store = createStore(rootReducer);
 export default function RootLayout() {
   return (
     <Provider store={store}>
-      <Stack>
-        <Stack.Screen name="index" options={{headerShown:false}}/>
-        <Stack.Screen name="RegisterScreen" options={{headerShown:false}}/>
-      </Stack>
+      <LayoutWithAuth
+
+      />
     </Provider>
   )
 }
+
+function LayoutWithAuth(){
+  const isLogin = useSelector(state => state.profileReducer.isLogin);
+  return(
+    <Stack initialRouteName={isLogin ? "(tabs)" : "index"}>
+  {!isLogin && (
+    <>
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="register" options={{ headerShown: false }} />
+    </>
+  )}
+  {isLogin && (
+    <Stack.Screen name="(tabs)" /> 
+  )}
+</Stack>
+  )
+} 

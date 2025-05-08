@@ -25,7 +25,7 @@ const index = () => {
             && (password.toLowerCase() === 
           globalProfileData.password.toLowerCase()))
     {
-      router.push('HomeScreen');
+      router.push('./(tabs)');
     }
     else {
       alert(`Your username and password didn't match!`);
@@ -81,7 +81,7 @@ const index = () => {
           <Text style={styles.text}>
             Don't Have an account?
           </Text>
-          <TouchableOpacity onPress={() => router.push('./RegisterScreen')}>
+          <TouchableOpacity onPress={() => router.push('./register')}>
             <Text style={styles.registerText}>
               Register
             </Text>
